@@ -1,0 +1,4 @@
+#ifndef INCL_PIN_DEFINITIONS
+#define INCL_PIN_DEFINITIONS
+
+#endif
