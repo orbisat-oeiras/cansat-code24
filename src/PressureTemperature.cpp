@@ -40,22 +40,30 @@ bool PressureTemperature::Setup(int timeoutAttempts = -1, int retryPeriod = 3000
         attempts++;
     }
     if (attempts > timeoutAttempts)
-    return false;
+        return false;
 
     return true;
 }
 
 float PressureTemperature::GetTemperature()
 {
-    return 0.0f;
+    return _sensor.readTempC();
 }
 
 float PressureTemperature::GetPressure()
 {
-    return 0.0f;
+    return _sensor.readPressPa();
 }
 
 float PressureTemperature::GetAltitude(float temperature, float pressure)
 {
-    return 0.0f;
+    // See https://physics.stackexchange.com/questions/333475/how-to-calculate-altitude-from-current-temperature-and-pressure
+    // for more details
+
+    // Define constants
+    const float p0 = 101325.f, exp = 1 / 5.257f, abs0 = -273.15, L = 0.0065f;
+    // Compute the altitude
+    float pTerm = powf(p0 / pressure, exp) - 1;
+    float tTerm = temperature - abs0;
+    return pTerm * tTerm / L;
 }
