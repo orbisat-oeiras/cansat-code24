@@ -4,6 +4,6 @@
 	"board": "arduino:avr:nano",
 	"sketch": "cansat-code24.ino",
 	"output": "build",
-	"buildPreferences": [["build.extra_flags", "-Ilib"]],
+	"buildPreferences": [["compiler.cpp.extra_flags", "-Ilib -include Arduino.h"]],
 	"intelliSenseGen": "disable"
 }
