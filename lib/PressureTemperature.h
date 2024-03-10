@@ -2,6 +2,7 @@
 #define INCL_PRESSURE_TEMPERATURE
 
 #include <DFRobot_BMP3XX.h>
+#include <GlobalDefs.h>
 
 /**
  * @brief Wrapper class for interfacing with the BMP388 atmospheric pressure and temperature sensor.
@@ -10,15 +11,17 @@ class PressureTemperature
 {
 private:
     DFRobot_BMP388_I2C _sensor;
+    PrintLog _log;
 
 public:
     /**
      * @brief Construct a new PressureTemperature object
      *
      */
-    PressureTemperature();
+    PressureTemperature(PrintLog pl);
     /**
      * @brief Destroy the PressureTemperature object
+     * @todo unnecessary destructor, it seems
      */
     ~PressureTemperature();
 

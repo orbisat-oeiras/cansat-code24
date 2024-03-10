@@ -1,6 +1,6 @@
 #include <PressureTemperature.h>
 
-PressureTemperature::PressureTemperature() : _sensor(&Wire, _sensor.eSDOVDD)
+PressureTemperature::PressureTemperature(PrintLog pl) : _sensor(&Wire, _sensor.eSDOVDD), _log(pl)
 {
 }
 
