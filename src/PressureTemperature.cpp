@@ -25,7 +25,7 @@ bool PressureTemperature::Setup(int timeoutAttempts = -1, int retryPeriod = 3000
             _log("[BMP388]:[SETUP] Data bus error");
         else if (result = ERR_IC_VERSION)
             _log("[BMP388]:[SETUP] Mismatched chip versions");
-        _log(sprintf_get("[BMP388]:[SETUP] Retrying in {}ms", retryPeriod));
+        _log(((String)"[BMP388]:[SETUP] Retrying in "+retryPeriod+"ms").c_str());
         attempts++;
     }
     if (attempts > timeoutAttempts)
@@ -36,13 +36,14 @@ bool PressureTemperature::Setup(int timeoutAttempts = -1, int retryPeriod = 3000
     attempts = (timeoutAttempts == -1 ? INT16_MIN : 0);
     while (attempts < timeoutAttempts && !_sensor.setSamplingMode(_sensor.eUltraPrecision))
     {
-        _log(sprintf_get("[BMP388]:[SETUP] Failed top set sampling mode, retrying in {}ms", retryPeriod));
+        _log(((String)"[BMP388]:[SETUP] Failed top set sampling mode, retrying in "+retryPeriod+"ms").c_str());
         attempts++;
     }
+    _log("[BMP388]:[SETUP] Sampling mode configured");
     if (attempts > timeoutAttempts)
         return false;
 
-    _log(sprintf_get("[BMP388]:[SETUP] Sampling period = {}us, sampling frequency = {}Hz", _sensor.getSamplingPeriodUS(), 1E6 / _sensor.getSamplingPeriodUS()));
+    _log(((String)"[BMP388]:[SETUP] Sampling period = "+_sensor.getSamplingPeriodUS()+"us, sampling frequency = "+1E6 / _sensor.getSamplingPeriodUS()+"Hz").c_str());
 
     return true;
 }
