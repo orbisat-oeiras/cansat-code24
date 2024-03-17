@@ -42,6 +42,8 @@ bool PressureTemperature::Setup(int timeoutAttempts = -1, int retryPeriod = 3000
     if (attempts > timeoutAttempts)
         return false;
 
+    _log(sprintf_get("[BMP388]:[SETUP] Sampling period = {}us, sampling frequency = {}Hz", _sensor.getSamplingPeriodUS(), 1E6 / _sensor.getSamplingPeriodUS()));
+
     return true;
 }
 
