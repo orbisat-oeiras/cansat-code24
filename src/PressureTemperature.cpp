@@ -21,9 +21,9 @@ bool PressureTemperature::Setup(int timeoutAttempts = -1, int retryPeriod = 3000
     // store its return value in result and compare it to ERR_OK
     while (attempts < timeoutAttempts && ERR_OK != (result = _sensor.begin()))
     {
-        if (result = ERR_DATA_BUS)
+        if (result == ERR_DATA_BUS)
             _log("[BMP388]:[SETUP] Data bus error");
-        else if (result = ERR_IC_VERSION)
+        else if (result == ERR_IC_VERSION)
             _log("[BMP388]:[SETUP] Mismatched chip versions");
         _log(((String)"[BMP388]:[SETUP] Retrying in "+retryPeriod+"ms").c_str());
         attempts++;
