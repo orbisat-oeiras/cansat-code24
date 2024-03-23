@@ -10,13 +10,14 @@
 class PressureTemperature
 {
 private:
-    DFRobot_BMP388_I2C _sensor;
     PrintLog _log;
+    DFRobot_BMP388_I2C _sensor;
 
 public:
     /**
      * @brief Construct a new PressureTemperature object
      *
+     * @param pl A logging fuction to be used for internal messages
      */
     PressureTemperature(PrintLog pl);
     /**
