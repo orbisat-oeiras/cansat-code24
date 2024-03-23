@@ -44,9 +44,7 @@ void loop()
   unsigned long timestamp = millis();
   float t = pressureTemp.GetTemperature(), p = pressureTemp.GetPressure();
 
-  String message = (String) "Time = " + timestamp + "ms from startup\n"
-                                                    "Temperature = " +
-                   t + " ºC\n" + "Pressure = " + p + " Pa\n" + "Altitude = " + pressureTemp.GetAltitude(t, p) + " m";
+  String message = (String) "[" + timestamp + "]:[" + p + "]:[" + t + "];";
 
   Serial.println(message);
   radio.SendLine(message, true);
