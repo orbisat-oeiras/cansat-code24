@@ -1,0 +1,4 @@
+#ifndef INCL_SD_MANAGEMENT
+#define INCL_SD_MANAGEMENT
+
+#endif
