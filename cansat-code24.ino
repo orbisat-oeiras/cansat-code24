@@ -37,6 +37,9 @@ void setup()
   radio.Begin();
 
   Serial.flush();
+
+  // Send schema message
+  radio.SendLine("schema[timestamp]:[pressure]:[temperature]", true);
 }
 
 void loop()
