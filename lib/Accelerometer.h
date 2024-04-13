@@ -1,0 +1,4 @@
+#ifndef INCL_ACCELEROMETER
+#define INCL_ACCELEROMETER
+
+#endif
