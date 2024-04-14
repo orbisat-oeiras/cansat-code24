@@ -10,7 +10,6 @@
 class PressureTemperature
 {
 private:
-    PrintLog _log;
     DFRobot_BMP388_I2C _sensor;
 
 public:
@@ -19,7 +18,7 @@ public:
      *
      * @param pl A logging fuction to be used for internal messages
      */
-    PressureTemperature(PrintLog pl);
+    PressureTemperature();
     /**
      * @brief Destroy the PressureTemperature object
      * @todo unnecessary destructor, it seems

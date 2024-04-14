@@ -1,6 +1,6 @@
 #include <PressureTemperature.h>
 
-PressureTemperature::PressureTemperature(PrintLog pl) : _sensor(&Wire, _sensor.eSDOVDD), _log(pl)
+PressureTemperature::PressureTemperature() : _sensor(&Wire, _sensor.eSDOVDD)
 {
 }
 
@@ -22,28 +22,37 @@ bool PressureTemperature::Setup(int timeoutAttempts = -1, int retryPeriod = 3000
     while (attempts < timeoutAttempts && ERR_OK != (result = _sensor.begin()))
     {
         if (result == ERR_DATA_BUS)
-            _log("[BMP388]:[SETUP] Data bus error");
+            Serial.println(F("[BMP388]:[SETUP] Data bus error"));
         else if (result == ERR_IC_VERSION)
-            _log("[BMP388]:[SETUP] Mismatched chip versions");
-        _log(((String)"[BMP388]:[SETUP] Retrying in "+retryPeriod+"ms").c_str());
+            Serial.println(F("[BMP388]:[SETUP] Mismatched chip versions"));
+        Serial.print(F("[BMP388]:[SETUP] Retrying in "));
+        Serial.print(retryPeriod);
+        Serial.println(F("ms"));
         attempts++;
     }
     if (attempts > timeoutAttempts)
         return false;
 
-    _log("[BMP388]:[SETUP] Sensor on");
+    Serial.println(F("[BMP388]:[SETUP] Sensor on"));
 
     attempts = (timeoutAttempts == -1 ? INT16_MIN : 0);
     while (attempts < timeoutAttempts && !_sensor.setSamplingMode(_sensor.eUltraPrecision))
     {
-        _log(((String)"[BMP388]:[SETUP] Failed top set sampling mode, retrying in "+retryPeriod+"ms").c_str());
+        Serial.print(F("[BMP388]:[SETUP] Failed top set sampling mode, retrying in "));
+        Serial.print(retryPeriod);
+        Serial.println(F("ms"));
         attempts++;
     }
-    _log("[BMP388]:[SETUP] Sampling mode configured");
+    Serial.println(F("[BMP388]:[SETUP] Sampling mode configured"));
     if (attempts > timeoutAttempts)
         return false;
 
-    _log(((String)"[BMP388]:[SETUP] Sampling period = "+_sensor.getSamplingPeriodUS()+"us, sampling frequency = "+1E6 / _sensor.getSamplingPeriodUS()+"Hz").c_str());
+    Serial.print(F("[BMP388]:[SETUP] Sampling period = "));
+    Serial.print(_sensor.getSamplingPeriodUS());
+    Serial.print(F("us, sampling frequency = "));
+    Serial.print(1E6 / _sensor.getSamplingPeriodUS());
+    Serial.println(F("Hz"));
+    Serial.flush();
 
     return true;
 }

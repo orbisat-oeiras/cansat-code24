@@ -1,9 +1,14 @@
 {
-	"configuration": "cpu=atmega328",
-	"port": "COM4",
-	"board": "arduino:avr:nano",
-	"sketch": "cansat-code24.ino",
-	"output": "build",
-	"buildPreferences": [["compiler.cpp.extra_flags", "-Ilib -include Arduino.h"]],
-	"intelliSenseGen": "disable"
+    "configuration": "cpu=atmega328",
+    "port": "COM8",
+    "board": "arduino:avr:nano",
+    "sketch": "cansat-code24.ino",
+    "output": "build",
+    "buildPreferences": [
+        [
+            "compiler.cpp.extra_flags",
+            "-Ilib -include Arduino.h"
+        ]
+    ],
+    "intelliSenseGen": "disable"
 }
