@@ -13,6 +13,8 @@
 PressureTemperature pressureTemp;
 RadioInterface radio;
 SDManagement card;
+Accelerometer accel(15);
+bool usePowerSaving = true, powerSaving = true;
 
 void setup()
 {
@@ -37,6 +39,7 @@ void setup()
   radio.Configure(frequency, RadioInterface::RadioPower::pwr9, RadioInterface::ParityCheck::NoCheck);
   radio.Begin();
   card.Setup();
+  accel.Begin();
 
   radio._apc220.println(SCHEMA_MSG);
   radio._apc220.flush();
@@ -48,16 +51,49 @@ void setup()
 
 void loop()
 {
+  if (usePowerSaving && powerSaving)
+  {
+    if (accel.IsMoving())
+    {
+      Serial.println("Exiting power saving mode");
+      powerSaving = false;
+      // TODO: close a transistor so other components are on
+    }
+    else
+    {
+      return;
+    }
+  }
   unsigned long timestamp = millis();
   float t = pressureTemp.GetTemperature(), p = pressureTemp.GetPressure();
-
-  Serial.print(F("["));
-  Serial.print(timestamp);
-  Serial.print(F("]:["));
-  Serial.print(p);
-  Serial.print(F("]:["));
-  Serial.print(t);
-  Serial.println(F("];"));
+  sensors_vec_t acceleration = accel.GetAcceleration();
+#define printToAll(data)     \
+  Serial.print(data);        \
+  radio._apc220.print(data); \
+  card._file.print(data);
+#define printlnToAll(data)     \
+  Serial.println(data);        \
+  radio._apc220.println(data); \
+  card._file.println(data);
+  printToAll(F("["));
+  printToAll(timestamp);
+  printToAll(F("]:["));
+  printToAll(p);
+  printToAll(F("]:["));
+  printToAll(t);
+  printToAll(F("]:["));
+  printToAll(acceleration.x);
+  printToAll(F("]:["));
+  printToAll(acceleration.y);
+  printToAll(F("]:["));
+  printToAll(acceleration.z);
+  printToAll(F("]:["));
+  printToAll(lat);
+  printToAll(F("]:["));
+  printToAll(lon);
+  printToAll(F("]:["));
+  printToAll(alt);
+  printlnToAll(F("];"));
   Serial.flush();
 
   radio._apc220.print(F("["));
