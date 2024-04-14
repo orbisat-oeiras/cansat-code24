@@ -14,6 +14,8 @@ PressureTemperature pressureTemp;
 RadioInterface radio;
 SDManagement card;
 Accelerometer accel(15);
+GPS gps;
+
 bool usePowerSaving = true, powerSaving = true;
 
 void setup()
@@ -38,8 +40,12 @@ void setup()
 
   radio.Configure(frequency, RadioInterface::RadioPower::pwr9, RadioInterface::ParityCheck::NoCheck);
   radio.Begin();
+
   card.Setup();
+
   accel.Begin();
+
+  gps.Begin();
 
   radio._apc220.println(SCHEMA_MSG);
   radio._apc220.flush();
@@ -64,9 +70,13 @@ void loop()
       return;
     }
   }
+
   unsigned long timestamp = millis();
   float t = pressureTemp.GetTemperature(), p = pressureTemp.GetPressure();
   sensors_vec_t acceleration = accel.GetAcceleration();
+  Serial.println(gps.ParseData());
+  float lat = gps.GetLatitude(), lon = gps.GetLongitude(), alt = gps.GetAltitude();
+
 #define printToAll(data)     \
   Serial.print(data);        \
   radio._apc220.print(data); \
@@ -75,6 +85,7 @@ void loop()
   Serial.println(data);        \
   radio._apc220.println(data); \
   card._file.println(data);
+
   printToAll(F("["));
   printToAll(timestamp);
   printToAll(F("]:["));
@@ -95,23 +106,7 @@ void loop()
   printToAll(alt);
   printlnToAll(F("];"));
   Serial.flush();
-
-  radio._apc220.print(F("["));
-  radio._apc220.print(timestamp);
-  radio._apc220.print(F("]:["));
-  radio._apc220.print(p);
-  radio._apc220.print(F("]:["));
-  radio._apc220.print(t);
-  radio._apc220.println(F("];"));
   radio._apc220.flush();
-
-  card._file.print(F("["));
-  card._file.print(timestamp);
-  card._file.print(F("]:["));
-  card._file.print(p);
-  card._file.print(F("]:["));
-  card._file.print(t);
-  card._file.println(F("];"));
   card._file.sync();
 
   delay(timestamp + 500 - millis());
