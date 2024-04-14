@@ -17,6 +17,7 @@ Accelerometer accel(15);
 GPS gps;
 
 bool usePowerSaving = true, powerSaving = true;
+int powerSavingStartTime = 0, powerSavingOffDuration = 5 * 60000;
 
 void setup()
 {
@@ -63,12 +64,18 @@ void loop()
     {
       Serial.println("Exiting power saving mode");
       powerSaving = false;
+      powerSavingStartTime = millis();
       // TODO: close a transistor so other components are on
     }
     else
     {
       return;
     }
+  }
+
+  if (millis() >= powerSavingStartTime + powerSavingOffDuration)
+  {
+    powerSaving = true;
   }
 
   unsigned long timestamp = millis();
