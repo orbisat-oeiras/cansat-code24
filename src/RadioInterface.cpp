@@ -13,8 +13,8 @@ void RadioInterface::Begin()
 {
     // Open the SoftwareSerial port at the configured baudrate
     _apc220.begin(_configuredBaudValue);
-    _apc220.println(SCHEMA_MSG);
-    _apc220.flush();
+    //_apc220.println(SCHEMA_MSG);
+    //_apc220.flush();
     Serial.print(F("[APC220]:[SETUP] SoftwareSerial interface opened at "));
     Serial.print(_configuredBaudValue);
     Serial.println(F("bps"));

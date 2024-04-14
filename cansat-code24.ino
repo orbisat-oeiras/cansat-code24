@@ -38,6 +38,11 @@ void setup()
   radio.Begin();
   card.Setup();
 
+  radio._apc220.println(SCHEMA_MSG);
+  radio._apc220.flush();
+  card._file.println(SCHEMA_MSG);
+  card._file.sync();
+
   Serial.flush();
 }
 

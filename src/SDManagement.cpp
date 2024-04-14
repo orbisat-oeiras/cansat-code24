@@ -63,8 +63,8 @@ bool SDManagement::Setup(const char *filename = "log.txt")
         Serial.println(F("[SD]:[SETUP] Failed to open file for writing"));
         return false;
     }
-    _file.println(SCHEMA_MSG);
-    _file.flush();
+    //_file.println(SCHEMA_MSG);
+    //_file.flush();
 
     Serial.println(F("[SD]:[SETUP] Configured fine!"));
     return true;
