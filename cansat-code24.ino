@@ -12,6 +12,7 @@
 // Create component objects
 PressureTemperature pressureTemp;
 RadioInterface radio;
+SDManagement card;
 
 void setup()
 {
@@ -35,11 +36,9 @@ void setup()
 
   radio.Configure(frequency, RadioInterface::RadioPower::pwr9, RadioInterface::ParityCheck::NoCheck);
   radio.Begin();
+  card.Setup();
 
   Serial.flush();
-
-  // Send schema message
-  radio.SendLine("schema[timestamp]:[pressure]:[temperature]", true);
 }
 
 void loop()
@@ -64,6 +63,15 @@ void loop()
   radio._apc220.print(t);
   radio._apc220.println(F("];"));
   radio._apc220.flush();
+
+  card._file.print(F("["));
+  card._file.print(timestamp);
+  card._file.print(F("]:["));
+  card._file.print(p);
+  card._file.print(F("]:["));
+  card._file.print(t);
+  card._file.println(F("];"));
+  card._file.sync();
 
   delay(timestamp + 500 - millis());
 }
