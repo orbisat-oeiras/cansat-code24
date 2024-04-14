@@ -16,12 +16,9 @@ bool GPS::ParseData()
 {
     while (_ss.available() > 0)
     {
-        char c = _ss.read();
-        Serial.print(c);
-        if (_gps.encode(c))
+        if (_gps.encode(_ss.read()))
             return true;
     }
-    Serial.println("GPSOVER");
     return false;
 }
 

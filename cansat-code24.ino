@@ -74,7 +74,7 @@ void loop()
   unsigned long timestamp = millis();
   float t = pressureTemp.GetTemperature(), p = pressureTemp.GetPressure();
   sensors_vec_t acceleration = accel.GetAcceleration();
-  Serial.println(gps.ParseData());
+  gps.ParseData();
   float lat = gps.GetLatitude(), lon = gps.GetLongitude(), alt = gps.GetAltitude();
 
 #define printToAll(data)     \
