@@ -81,7 +81,7 @@ void loop()
   unsigned long timestamp = millis();
   float t = pressureTemp.GetTemperature(), p = pressureTemp.GetPressure();
   sensors_vec_t acceleration = accel.GetAcceleration();
-  gps.ParseData();
+  //gps.ParseData();
   float lat = gps.GetLatitude(), lon = gps.GetLongitude(), alt = gps.GetAltitude();
 
 #define printToAll(data)     \
@@ -116,5 +116,5 @@ void loop()
   radio._apc220.flush();
   card._file.sync();
 
-  delay(timestamp + 500 - millis());
+  gps.SmartDelay(timestamp + 500 - millis());
 }

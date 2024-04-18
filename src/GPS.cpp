@@ -1,7 +1,7 @@
 #include "GPS.h"
 #include <PinDefinitions.h>
 
-GPS::GPS() : _ss(GPS_TX, GPS_RX)
+GPS::GPS() : _ss(GPS_TX, GPS_RX), _alt(_gps, "$GPGGA", 10)
 {
 }
 
@@ -12,12 +12,37 @@ bool GPS::Begin()
     return true;
 }
 
+// This custom version of delay() ensures that the gps object
+// is being "fed".
+void GPS::SmartDelay(unsigned long ms)
+{
+  unsigned long start = millis();
+  do 
+  {
+    while (_ss.available())
+      _gps.encode(_ss.read());
+  
+    if(_gps.sentencesWithFix() > _fixes) {
+        _fixes = _gps.sentencesWithFix();
+        Serial.println(millis() - _lastFix);
+        _lastFix = millis();
+    }
+  } while (millis() - start < ms);
+}
+
 bool GPS::ParseData()
 {
     while (_ss.available() > 0)
     {
-        if (_gps.encode(_ss.read()))
+        char c = _ss.read();
+        //Serial.print(c);
+        if (_gps.encode(c))
             return true;
+    }
+    if(_gps.sentencesWithFix() > _fixes) {
+        _fixes = _gps.sentencesWithFix();
+        Serial.println(millis() - _lastFix);
+        _lastFix = millis();
     }
     return false;
 }
@@ -36,9 +61,10 @@ float GPS::GetLongitude()
     return _gps.location.lng();
 }
 
-float GPS::GetAltitude()
+double GPS::GetAltitude()
 {
-    if (!_gps.altitude.isValid())
-        return NAN;
+    /*if (!_alt.isValid())
+        return "";
+    return _alt.value();*/
     return _gps.altitude.meters();
 }
