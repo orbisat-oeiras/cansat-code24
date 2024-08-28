@@ -16,18 +16,19 @@ bool GPS::Begin()
 // is being "fed".
 void GPS::SmartDelay(unsigned long ms)
 {
-  unsigned long start = millis();
-  do 
-  {
-    while (_ss.available())
-      _gps.encode(_ss.read());
-  
-    if(_gps.sentencesWithFix() > _fixes) {
-        _fixes = _gps.sentencesWithFix();
-        Serial.println(millis() - _lastFix);
-        _lastFix = millis();
-    }
-  } while (millis() - start < ms);
+    unsigned long start = millis();
+    do
+    {
+        while (_ss.available())
+            _gps.encode(_ss.read());
+
+        if (_gps.sentencesWithFix() > _fixes)
+        {
+            _fixes = _gps.sentencesWithFix();
+            Serial.println(millis() - _lastFix);
+            _lastFix = millis();
+        }
+    } while (millis() - start < ms);
 }
 
 bool GPS::ParseData()
@@ -35,11 +36,12 @@ bool GPS::ParseData()
     while (_ss.available() > 0)
     {
         char c = _ss.read();
-        //Serial.print(c);
+        // Serial.print(c);
         if (_gps.encode(c))
             return true;
     }
-    if(_gps.sentencesWithFix() > _fixes) {
+    if (_gps.sentencesWithFix() > _fixes)
+    {
         _fixes = _gps.sentencesWithFix();
         Serial.println(millis() - _lastFix);
         _lastFix = millis();
@@ -67,4 +69,20 @@ double GPS::GetAltitude()
         return "";
     return _alt.value();*/
     return _gps.altitude.meters();
+}
+
+void GPS::Standby()
+{
+    if (_ss.availableForWrite())
+    {
+        _ss.write(GPS_SLEEP);
+    }
+}
+
+void GPS::WakeUp()
+{
+    if (_ss.availableForWrite())
+    {
+        _ss.write("0");
+    }
 }

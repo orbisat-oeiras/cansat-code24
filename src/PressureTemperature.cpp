@@ -79,3 +79,13 @@ float PressureTemperature::GetAltitude(float temperature, float pressure)
     float tTerm = temperature - abs0;
     return pTerm * tTerm / L;
 }
+
+void PressureTemperature::Standby()
+{
+    _sensor.setPWRMode(_sensor.eSleepMode);
+}
+
+void PressureTemperature::WakeUp()
+{
+    _sensor.setPWRMode(_sensor.eNormalMode);
+}

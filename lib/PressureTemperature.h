@@ -55,6 +55,9 @@ public:
      * @return [float] Computed altitude in meters
      */
     float GetAltitude(float temperature, float pressure);
+
+    void Standby();
+    void WakeUp();
 };
 
 #endif

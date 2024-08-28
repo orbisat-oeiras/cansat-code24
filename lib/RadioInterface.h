@@ -81,5 +81,8 @@ public:
      * @param parityCheck Parity check mode
      */
     void Configure(unsigned int radioFrequency, RadioPower radioPower, ParityCheck parityCheck);
+
+    void Standby();
+    void WakeUp();
 };
 #endif

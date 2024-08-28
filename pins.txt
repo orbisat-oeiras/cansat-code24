@@ -1,0 +1,40 @@
+apc - UART (a começar no lado da antena):
+gnd
+vcc
+en-none
+rx-yellow-d2
+tx-orange-d3
+aux-5v
+set-white-d4
+
+sd - SPI (a começar do led):
+miso-blue-d12
+sck-orange-d13
+ss-grey-d5
+mosi-green-d11
+gnd
+vcc
+
+bmp - I2C:
+blue-a5
+green-a4
+
+adxl345 - I2C:
+int1
+sda-a4
+scl-a5
+gnd
+3vo
+vin
+outro lado
+cs
+sdo
+int2
+gnd
+
+neo-7m - UART (a começar da antena):
+vcc
+gnd
+tx
+rx
+pps

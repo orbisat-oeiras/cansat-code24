@@ -26,5 +26,5 @@ sensors_vec_t Accelerometer::GetAcceleration()
 bool Accelerometer::IsMoving()
 {
     sensors_vec_t acl = GetAcceleration();
-    return max(max(acl.x, acl.y), acl.z) >= _threshold;
+    return max(max(abs(acl.x), abs(acl.y)), abs(acl.z)) >= _threshold;
 }

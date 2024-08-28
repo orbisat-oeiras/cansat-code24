@@ -7,6 +7,8 @@ RadioInterface::RadioInterface()
     // If the SET pin is LOW, the APC is being configured, so default it to HIGH
     pinMode(APC_SET, OUTPUT);
     digitalWrite(APC_SET, HIGH);
+    pinMode(APC_EN, OUTPUT);
+    digitalWrite(APC_EN, HIGH);
 }
 
 void RadioInterface::Begin()
@@ -28,7 +30,7 @@ void RadioInterface::Configure(unsigned int radioFrequency, RadioPower radioPowe
     so we set them to the same value to avoid any issues.
      */
     // SET being LOW tells the APC it's being configured
-    digitalWrite(APC_SET, LOW);
+    /*digitalWrite(APC_SET, LOW);
     _apc220.print(F("WR "));
     _apc220.print(radioFrequency);
     _apc220.print(' ');
@@ -39,9 +41,21 @@ void RadioInterface::Configure(unsigned int radioFrequency, RadioPower radioPowe
     _apc220.print((int)_configuredBaud);
     _apc220.print(' ');
     _apc220.print((int)parityCheck);
-    _apc220.print(F("\x0D\x0A"));
+    _apc220.print(F("\x0D\x0A"));*/
+
+    _apc220.print("WR 433250 4 9 4 0 \x0D\x0A");
     // Make sure the entire string is sent before we move on
     _apc220.flush();
     digitalWrite(APC_SET, HIGH);
     Serial.println(F("[APC220]:[SETUP] Succesfully configured"));
+}
+
+void RadioInterface::Standby()
+{
+    digitalWrite(APC_EN, LOW);
+}
+
+void RadioInterface::WakeUp()
+{
+    digitalWrite(APC_EN, HIGH);
 }

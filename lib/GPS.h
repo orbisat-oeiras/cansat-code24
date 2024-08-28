@@ -4,6 +4,8 @@
 #include <TinyGPSPlus.h>
 #include <SoftwareSerial.h>
 
+#define GPS_SLEEP F("\x00\x00  \xB5 \x62 \x02 \x41 \x08 \x00 \x00 \x00 \x00 \x00 \x02 \x00 \x00 \x00 \x4D \x3B")
+
 class GPS
 {
 private:
@@ -20,6 +22,9 @@ public:
     float GetLatitude();
     float GetLongitude();
     double GetAltitude();
+
+    void Standby();
+    void WakeUp();
 };
 
 #endif
