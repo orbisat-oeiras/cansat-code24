@@ -47,13 +47,11 @@ public:
     };
 
 private:
-    PrintLog _log;
     /* Using HardwareSerial (pins 0 and 1) doesn't seem to work very well,
      * because it interferes with communication with the computer.
      * So, SoftwareSerial is used instead to allow any pins to be used as
      * a serial port.
      */
-    SoftwareSerial _apc220;
     /* These two values hold the same information, represented differently:
        - the enum is useful to the APC because it converts directly to the expected number
        - the int is useful to Arduino because it can be passed on to SoftwareSerial
@@ -63,12 +61,13 @@ private:
     const unsigned int _configuredBaudValue = 19200u;
 
 public:
+    SoftwareSerial _apc220;
     /**
      * @brief Construct a new RadioInterface object
      *
      * @param pl A logging fuction to be used for internal messages
      */
-    RadioInterface(PrintLog pl);
+    RadioInterface();
     /**
      * @brief Open communication channel between the Arduino and the APC220
      *
@@ -82,13 +81,8 @@ public:
      * @param parityCheck Parity check mode
      */
     void Configure(unsigned int radioFrequency, RadioPower radioPower, ParityCheck parityCheck);
-    /**
-     * @brief Send a line of text through the APC220
-     *
-     * @param line The text to be sent
-     * @param flush Whether to flush the Serial port before moving on
-     */
-    void SendLine(String line, bool flush = false);
-};
 
+    void Standby();
+    void WakeUp();
+};
 #endif
